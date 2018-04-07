@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenario.png" type="Texture" id=1]
+
+[node name="stairs_tileset_scn" type="Node"]
+
+[node name="stairs_000" type="Sprite" parent="." index="0"]
+
+position = Vector2( 48, 24 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 40, 24, 8, 8 )
+_sections_unfolded = [ "Offset", "Region", "Transform" ]
+
+[node name="stairs_001" type="Sprite" parent="." index="1"]
+
+position = Vector2( 48, 32 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 40, 32, 8, 8 )
+_sections_unfolded = [ "Offset", "Region", "Transform" ]
+
+[node name="stairs_002" type="Sprite" parent="." index="2"]
+
+position = Vector2( 56, 24 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 40, 48, 8, 8 )
+_sections_unfolded = [ "Offset", "Region", "Transform" ]
+
+[node name="stairs_003" type="Sprite" parent="." index="3"]
+
+position = Vector2( 56, 32 )
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 40, 56, 8, 8 )
+_sections_unfolded = [ "Offset", "Region", "Transform" ]
+
+

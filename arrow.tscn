@@ -1,0 +1,56 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://arrow.gd" type="Script" id=1]
+[ext_resource path="res://scenario.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 4, 1 )
+
+[node name="arrow" type="Area2D"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+collision_layer = 7
+collision_mask = 7
+audio_bus_override = false
+audio_bus_name = "Master"
+script = ExtResource( 1 )
+_sections_unfolded = [ "Collision" ]
+
+[node name="Sprite" type="Sprite" parent="." index="0"]
+
+position = Vector2( -4, 3 )
+texture = ExtResource( 2 )
+centered = false
+offset = Vector2( 0, -8 )
+region_enabled = true
+region_rect = Rect2( 8, 40, 8, 8 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="collision" type="CollisionShape2D" parent="." index="1"]
+
+position = Vector2( 0, -1 )
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="lifetimer" type="Timer" parent="." index="2"]
+
+process_mode = 1
+wait_time = 0.5
+one_shot = true
+autostart = true
+
+[connection signal="area_entered" from="." to="." method="_on_arrow_area_entered"]
+
+[connection signal="timeout" from="lifetimer" to="." method="_on_lifetimer_timeout"]
+
+

@@ -1,0 +1,235 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://robot_1.gd" type="Script" id=1]
+[ext_resource path="res://robots.png" type="Texture" id=2]
+[ext_resource path="res://robot_die.wav" type="AudioStream" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 4, 7 )
+
+[sub_resource type="RectangleShape2D" id=2]
+
+custom_solver_bias = 0.0
+extents = Vector2( 4, 7 )
+
+[sub_resource type="Animation" id=3]
+
+resource_name = "dead"
+length = 0.2
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("rotate/robots:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 16, 17 ]
+}
+
+[sub_resource type="Animation" id=4]
+
+length = 0.4
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("rotate/robots:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+
+[sub_resource type="Animation" id=5]
+
+length = 0.4
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("rotate/robots:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 4, 5, 6, 7 ]
+}
+
+[sub_resource type="RectangleShape2D" id=6]
+
+custom_solver_bias = 0.0
+extents = Vector2( 4, 7 )
+
+[node name="robot_1" type="KinematicBody2D" groups=[
+"enemy",
+]]
+
+input_pickable = false
+collision_layer = 12
+collision_mask = 2
+collision/safe_margin = 0.001
+script = ExtResource( 1 )
+_sections_unfolded = [ "Collision", "collision" ]
+dir_nxt = 1
+
+[node name="rotate" type="Node2D" parent="." index="0"]
+
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="robots" type="Sprite" parent="rotate" index="0"]
+
+position = Vector2( 0, -8 )
+texture = ExtResource( 2 )
+vframes = 8
+hframes = 8
+frame = 17
+_sections_unfolded = [ "Animation", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="hitbox" type="Area2D" parent="rotate" index="1" groups=[
+"hitbox",
+]]
+
+position = Vector2( 2, -8 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+monitorable = false
+audio_bus_override = false
+audio_bus_name = "Master"
+_sections_unfolded = [ "Collision" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="rotate/hitbox" index="0"]
+
+visible = false
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="collision" type="CollisionShape2D" parent="." index="1"]
+
+visible = false
+position = Vector2( 0, -7 )
+shape = SubResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="anim" type="AnimationPlayer" parent="." index="2"]
+
+root_node = NodePath("..")
+autoplay = "idle"
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/dead = SubResource( 3 )
+anims/idle = SubResource( 4 )
+anims/run = SubResource( 5 )
+blend_times = [  ]
+
+[node name="statetimer" type="Timer" parent="." index="3"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = true
+autostart = true
+
+[node name="ray1" type="RayCast2D" parent="." index="4"]
+
+visible = false
+position = Vector2( -6, -2 )
+enabled = true
+exclude_parent = true
+cast_to = Vector2( 0, 3 )
+collision_mask = 2
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="ray2" type="RayCast2D" parent="." index="5"]
+
+visible = false
+position = Vector2( 6, -2 )
+enabled = true
+exclude_parent = true
+cast_to = Vector2( 0, 3 )
+collision_mask = 2
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="damagebox" type="Area2D" parent="." index="6" groups=[
+"damagebox",
+]]
+
+position = Vector2( 0, -7 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+monitoring = false
+collision_layer = 4
+collision_mask = 4
+audio_bus_override = false
+audio_bus_name = "Master"
+_sections_unfolded = [ "Collision" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="collision" type="CollisionShape2D" parent="damagebox" index="0"]
+
+visible = false
+shape = SubResource( 6 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="." index="7"]
+
+visible = false
+rect = Rect2( -80, -80, 160, 160 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." index="8"]
+
+stream = ExtResource( 3 )
+volume_db = 0.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[connection signal="area_entered" from="rotate/hitbox" to="." method="_on_hitbox_area_entered"]
+
+[connection signal="timeout" from="statetimer" to="." method="_on_statetimer_timeout"]
+
+[connection signal="screen_entered" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_entered"]
+
+

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/boss_bullet.wav-4788e5e5239385357e8cbfd41e732e96.sample"
+
+[deps]
+
+source_file="res://boss_bullet.wav"
+source_md5="65009e77dc8d0ef8f9e4cb7aa8689e86"
+
+dest_files=[ "res://.import/boss_bullet.wav-4788e5e5239385357e8cbfd41e732e96.sample" ]
+dest_md5="bef11a807d90ce618dbbb620c7195c90"
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

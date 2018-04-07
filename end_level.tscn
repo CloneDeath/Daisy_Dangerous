@@ -1,0 +1,455 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://end_level.gd" type="Script" id=1]
+[ext_resource path="res://paralax_bg_daytime.tscn" type="PackedScene" id=2]
+[ext_resource path="res://bg_tileset.tres" type="TileSet" id=3]
+[ext_resource path="res://tileset.tres" type="TileSet" id=4]
+[ext_resource path="res://tree.tscn" type="PackedScene" id=5]
+[ext_resource path="res://bird.tscn" type="PackedScene" id=6]
+[ext_resource path="res://stairs_tileset.tres" type="TileSet" id=7]
+[ext_resource path="res://stairs.gd" type="Script" id=8]
+[ext_resource path="res://destructible.gd" type="Script" id=9]
+[ext_resource path="res://player.tscn" type="PackedScene" id=10]
+[ext_resource path="res://tinyfont.fnt" type="BitmapFont" id=11]
+[ext_resource path="res://title_text.png" type="Texture" id=12]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 8, 30 )
+
+[sub_resource type="GDScript" id=2]
+
+script/source = "extends Area2D
+
+# class member variables go here, for example:
+# var a = 2
+# var b = \"textvar\"
+
+func _ready():
+	# Called every time the node is added to the scene.
+	# Initialization here
+	pass
+
+
+var is_done = false
+func _on_cutscene_01_body_entered(body):
+	if body != game.player: return
+	if is_done: return
+	if not game.add_event( \"cutscene_01\" ): return
+	is_done = true
+	# cutscene
+	game.player.set_cutscene()
+	game.player.text( \"This cave looks a lot like an old game I played!\", 3 )
+	yield( game.player, \"text_finished\" )
+	game.player.look_at_player()
+	game.player.text( \"Do you know which game is that?\", 3 )
+	yield( game.player, \"text_finished\" )
+	game.player.clear_cutscene()"
+
+[sub_resource type="RectangleShape2D" id=3]
+
+custom_solver_bias = 0.0
+extents = Vector2( 10, 10 )
+
+[sub_resource type="Animation" id=4]
+
+resource_name = "rick"
+length = 1.0
+loop = false
+step = 0.1
+
+[sub_resource type="GDScript" id=5]
+
+script/source = "extends Label
+
+# class member variables go here, for example:
+# var a = 2
+# var b = \"textvar\"
+
+func _ready():
+	pass
+
+#func _process(delta):
+#	# Called every frame. Delta is time since last frame.
+#	# Update game logic here.
+#	pass
+"
+
+[sub_resource type="Animation" id=6]
+
+resource_name = "cycle"
+length = 5.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:custom_colors/font_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 1 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+
+resource_name = "cycle"
+length = 5.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:custom_colors/font_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 1 ) ]
+}
+
+[node name="end_level" type="Node2D"]
+
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+nxt_level = "res://level_01.tscn"
+music = "res://level_02.ogg"
+
+[node name="paralax_bg_daytime" parent="." index="0" instance=ExtResource( 2 )]
+
+[node name="bg" type="TileMap" parent="." index="1"]
+
+modulate = Color( 0.71875, 0.71875, 0.71875, 1 )
+light_mask = 2
+z_index = -5
+mode = 0
+tile_set = ExtResource( 3 )
+cell_size = Vector2( 8, 8 )
+cell_quadrant_size = 16
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+cell_half_offset = 2
+cell_tile_origin = 0
+cell_y_sort = true
+cell_clip_uv = false
+collision_use_kinematic = false
+collision_friction = 1.0
+collision_bounce = 0.0
+collision_layer = 1
+collision_mask = 1
+occluder_light_mask = 2
+format = 1
+tile_data = PoolIntArray(  )
+_sections_unfolded = [ "Cell", "Transform", "Visibility", "Z Index" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="walls" type="TileMap" parent="." index="2" groups=[
+"tilemap",
+]]
+
+editor/display_folded = true
+mode = 0
+tile_set = ExtResource( 4 )
+cell_size = Vector2( 8, 8 )
+cell_quadrant_size = 16
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+cell_half_offset = 2
+cell_tile_origin = 0
+cell_y_sort = true
+cell_clip_uv = false
+collision_use_kinematic = true
+collision_friction = 1.0
+collision_bounce = 0.0
+collision_layer = 2
+collision_mask = 2
+occluder_light_mask = 1
+format = 1
+tile_data = PoolIntArray( -262104, 89, 0, -131073, 93, 0, -196568, 89, 0, -65537, 93, 0, -131032, 89, 0, -1, 93, 0, -65496, 89, 0, 65535, 93, 0, 40, 89, 0, 131071, 93, 0, 65539, 117, 0, 65540, 118, 0, 65547, 119, 0, 65556, 118, 0, 65557, 117, 0, 65566, 119, 0, 65570, 118, 0, 65573, 117, 0, 65576, 89, 0, 196607, 93, 0, 131072, 85, 0, 131073, 85, 0, 131074, 85, 0, 131075, 86, 0, 131076, 85, 0, 131077, 86, 0, 131078, 85, 0, 131079, 86, 0, 131080, 87, 0, 131081, 85, 0, 131082, 86, 0, 131083, 85, 0, 131084, 85, 0, 131085, 86, 0, 131086, 85, 0, 131087, 85, 0, 131088, 85, 0, 131089, 85, 0, 131090, 85, 0, 131091, 86, 0, 131092, 87, 0, 131093, 85, 0, 131094, 87, 0, 131095, 86, 0, 131096, 85, 0, 131097, 85, 0, 131098, 85, 0, 131099, 86, 0, 131100, 87, 0, 131101, 85, 0, 131102, 86, 0, 131103, 87, 0, 131104, 85, 0, 131105, 85, 0, 131106, 86, 0, 131107, 87, 0, 131108, 85, 0, 131109, 86, 0, 131110, 87, 0, 131111, 86, 0, 131112, 89, 0, 262143, 96, 0, 196608, 96, 0, 196609, 96, 0, 196610, 96, 0, 196611, 96, 0, 196612, 96, 0, 196613, 96, 0, 196614, 96, 0, 196615, 96, 0, 196616, 96, 0, 196617, 96, 0, 196618, 96, 0, 196619, 96, 0, 196620, 96, 0, 196621, 96, 0, 196622, 96, 0, 196623, 96, 0, 196624, 96, 0, 196625, 96, 0, 196626, 96, 0, 196627, 96, 0, 196628, 96, 0, 196629, 96, 0, 196630, 96, 0, 196631, 96, 0, 196632, 96, 0, 196633, 96, 0, 196634, 96, 0, 196635, 96, 0, 196636, 96, 0, 196637, 96, 0, 196638, 96, 0, 196639, 96, 0, 196640, 96, 0, 196641, 96, 0, 196642, 96, 0, 196643, 96, 0, 196644, 96, 0, 196645, 96, 0, 196646, 96, 0, 196647, 96, 0, 196648, 96, 0, 327679, 96, 0, 262144, 96, 0, 262145, 96, 0, 262146, 96, 0, 262147, 96, 0, 262148, 96, 0, 262149, 96, 0, 262150, 96, 0, 262151, 96, 0, 262152, 96, 0, 262153, 96, 0, 262154, 96, 0, 262155, 96, 0, 262156, 96, 0, 262157, 96, 0, 262158, 96, 0, 262159, 96, 0, 262160, 96, 0, 262161, 96, 0, 262162, 96, 0, 262163, 96, 0, 262164, 96, 0, 262165, 96, 0, 262166, 96, 0, 262167, 96, 0, 262168, 96, 0, 262169, 96, 0, 262170, 96, 0, 262171, 96, 0, 262172, 96, 0, 262173, 96, 0, 262174, 96, 0, 262175, 96, 0, 262176, 96, 0, 262177, 96, 0, 262178, 96, 0, 262179, 96, 0, 262180, 96, 0, 262181, 96, 0, 262182, 96, 0, 262183, 96, 0, 262184, 96, 0, 393215, 96, 0, 327680, 96, 0, 327681, 96, 0, 327682, 96, 0, 327683, 96, 0, 327684, 96, 0, 327685, 96, 0, 327686, 96, 0, 327687, 96, 0, 327688, 96, 0, 327689, 96, 0, 327690, 96, 0, 327691, 96, 0, 327692, 96, 0, 327693, 96, 0, 327694, 96, 0, 327695, 96, 0, 327696, 96, 0, 327697, 96, 0, 327698, 96, 0, 327699, 96, 0, 327700, 96, 0, 327701, 96, 0, 327702, 96, 0, 327703, 96, 0, 327704, 96, 0, 327705, 96, 0, 327706, 96, 0, 327707, 96, 0, 327708, 96, 0, 327709, 96, 0, 327710, 96, 0, 327711, 96, 0, 327712, 96, 0, 327713, 96, 0, 327714, 96, 0, 327715, 96, 0, 327716, 96, 0, 327717, 96, 0, 327718, 96, 0, 327719, 96, 0, 327720, 96, 0, 458751, 96, 0, 393216, 96, 0, 393217, 96, 0, 393218, 96, 0, 393219, 96, 0, 393220, 96, 0, 393221, 96, 0, 393222, 96, 0, 393223, 96, 0, 393224, 96, 0, 393225, 96, 0, 393226, 96, 0, 393227, 96, 0, 393228, 96, 0, 393229, 96, 0, 393230, 96, 0, 393231, 96, 0, 393232, 96, 0, 393233, 96, 0, 393234, 96, 0, 393235, 96, 0, 393236, 96, 0, 393237, 96, 0, 393238, 96, 0, 393239, 96, 0, 393240, 96, 0, 393241, 96, 0, 393242, 96, 0, 393243, 96, 0, 393244, 96, 0, 393245, 96, 0, 393246, 96, 0, 393247, 96, 0, 393248, 96, 0, 393249, 96, 0, 393250, 96, 0, 393251, 96, 0, 393252, 96, 0, 393253, 96, 0, 393254, 96, 0, 393255, 96, 0, 393256, 96, 0, 524287, 96, 0, 458752, 96, 0, 458753, 96, 0, 458754, 96, 0, 458755, 96, 0, 458756, 96, 0, 458757, 96, 0, 458758, 96, 0, 458759, 96, 0, 458760, 96, 0, 458761, 96, 0, 458762, 96, 0, 458763, 96, 0, 458764, 96, 0, 458765, 96, 0, 458766, 96, 0, 458767, 96, 0, 458768, 96, 0, 458769, 96, 0, 458770, 96, 0, 458771, 96, 0, 458772, 96, 0, 458773, 96, 0, 458774, 96, 0, 458775, 96, 0, 458776, 96, 0, 458777, 96, 0, 458778, 96, 0, 458779, 96, 0, 458780, 96, 0, 458781, 96, 0, 458782, 96, 0, 458783, 96, 0, 458784, 96, 0, 458785, 96, 0, 458786, 96, 0, 458787, 96, 0, 458788, 96, 0, 458789, 96, 0, 458790, 96, 0, 458791, 96, 0, 458792, 96, 0, 589823, 96, 0, 524288, 96, 0, 524289, 96, 0, 524290, 96, 0, 524291, 96, 0, 524292, 96, 0, 524293, 96, 0, 524294, 96, 0, 524295, 96, 0, 524296, 96, 0, 524297, 96, 0, 524298, 96, 0, 524299, 96, 0, 524300, 96, 0, 524301, 96, 0, 524302, 96, 0, 524303, 96, 0, 524304, 96, 0, 524305, 96, 0, 524306, 96, 0, 524307, 96, 0, 524308, 96, 0, 524309, 96, 0, 524310, 96, 0, 524311, 96, 0, 524312, 96, 0, 524313, 96, 0, 524314, 96, 0, 524315, 96, 0, 524316, 96, 0, 524317, 96, 0, 524318, 96, 0, 524319, 96, 0, 524320, 96, 0, 524321, 96, 0, 524322, 96, 0, 524323, 96, 0, 524324, 96, 0, 524325, 96, 0, 524326, 96, 0, 524327, 96, 0, 524328, 96, 0, 655359, 96, 0, 589824, 96, 0, 589825, 96, 0, 589826, 96, 0, 589827, 96, 0, 589828, 96, 0, 589829, 96, 0, 589830, 96, 0, 589831, 96, 0, 589832, 96, 0, 589833, 96, 0, 589834, 96, 0, 589835, 96, 0, 589836, 96, 0, 589837, 96, 0, 589838, 96, 0, 589839, 96, 0, 589840, 96, 0, 589841, 96, 0, 589842, 96, 0, 589843, 96, 0, 589844, 96, 0, 589845, 96, 0, 589846, 96, 0, 589847, 96, 0, 589848, 96, 0, 589849, 96, 0, 589850, 96, 0, 589851, 96, 0, 589852, 96, 0, 589853, 96, 0, 589854, 96, 0, 589855, 96, 0, 589856, 96, 0, 589857, 96, 0, 589858, 96, 0, 589859, 96, 0, 589860, 96, 0, 589861, 96, 0, 589862, 96, 0, 589863, 96, 0, 589864, 96, 0, 720895, 96, 0, 655360, 96, 0, 655361, 96, 0, 655362, 96, 0, 655363, 96, 0, 655364, 96, 0, 655365, 96, 0, 655366, 96, 0, 655367, 96, 0, 655368, 96, 0, 655369, 96, 0, 655370, 96, 0, 655371, 96, 0, 655372, 96, 0, 655373, 96, 0, 655374, 96, 0, 655375, 96, 0, 655376, 96, 0, 655377, 96, 0, 655378, 96, 0, 655379, 96, 0, 655380, 96, 0, 655381, 96, 0, 655382, 96, 0, 655383, 96, 0, 655384, 96, 0, 655385, 96, 0, 655386, 96, 0, 655387, 96, 0, 655388, 96, 0, 655389, 96, 0, 655390, 96, 0, 655391, 96, 0, 655392, 96, 0, 655393, 96, 0, 655394, 96, 0, 655395, 96, 0, 655396, 96, 0, 655397, 96, 0, 655398, 96, 0, 655399, 96, 0, 655400, 96, 0, 786431, 96, 0, 720896, 96, 0, 720897, 96, 0, 720898, 96, 0, 720899, 96, 0, 720900, 96, 0, 720901, 96, 0, 720902, 96, 0, 720903, 96, 0, 720904, 96, 0, 720905, 96, 0, 720906, 96, 0, 720907, 96, 0, 720908, 96, 0, 720909, 96, 0, 720910, 96, 0, 720911, 96, 0, 720912, 96, 0, 720913, 96, 0, 720914, 96, 0, 720915, 96, 0, 720916, 96, 0, 720917, 96, 0, 720918, 96, 0, 720919, 96, 0, 720920, 96, 0, 720921, 96, 0, 720922, 96, 0, 720923, 96, 0, 720924, 96, 0, 720925, 96, 0, 720926, 96, 0, 720927, 96, 0, 720928, 96, 0, 720929, 96, 0, 720930, 96, 0, 720931, 96, 0, 720932, 96, 0, 720933, 96, 0, 720934, 96, 0, 720935, 96, 0, 720936, 96, 0, 851967, 96, 0, 786432, 96, 0, 786433, 96, 0, 786434, 96, 0, 786435, 96, 0, 786436, 96, 0, 786437, 96, 0, 786438, 96, 0, 786439, 96, 0, 786440, 96, 0, 786441, 96, 0, 786442, 96, 0, 786443, 96, 0, 786444, 96, 0, 786445, 96, 0, 786446, 96, 0, 786447, 96, 0, 786448, 96, 0, 786449, 96, 0, 786450, 96, 0, 786451, 96, 0, 786452, 96, 0, 786453, 96, 0, 786454, 96, 0, 786455, 96, 0, 786456, 96, 0, 786457, 96, 0, 786458, 96, 0, 786459, 96, 0, 786460, 96, 0, 786461, 96, 0, 786462, 96, 0, 786463, 96, 0, 786464, 96, 0, 786465, 96, 0, 786466, 96, 0, 786467, 96, 0, 786468, 96, 0, 786469, 96, 0, 786470, 96, 0, 786471, 96, 0, 786472, 96, 0, 917503, 96, 0, 851968, 96, 0, 851969, 96, 0, 851970, 96, 0, 851971, 96, 0, 851972, 96, 0, 851973, 96, 0, 851974, 96, 0, 851975, 96, 0, 851976, 96, 0, 851977, 96, 0, 851978, 96, 0, 851979, 96, 0, 851980, 96, 0, 851981, 96, 0, 851982, 96, 0, 851983, 96, 0, 851984, 96, 0, 851985, 96, 0, 851986, 96, 0, 851987, 96, 0, 851988, 96, 0, 851989, 96, 0, 851990, 96, 0, 851991, 96, 0, 851992, 96, 0, 851993, 96, 0, 851994, 96, 0, 851995, 96, 0, 851996, 96, 0, 851997, 96, 0, 851998, 96, 0, 851999, 96, 0, 852000, 96, 0, 852001, 96, 0, 852002, 96, 0, 852003, 96, 0, 852004, 96, 0, 852005, 96, 0, 852006, 96, 0, 852007, 96, 0, 852008, 96, 0, 983039, 96, 0, 917504, 96, 0, 917505, 96, 0, 917506, 96, 0, 917507, 96, 0, 917508, 96, 0, 917509, 96, 0, 917510, 96, 0, 917511, 96, 0, 917512, 96, 0, 917513, 96, 0, 917514, 96, 0, 917515, 96, 0, 917516, 96, 0, 917517, 96, 0, 917518, 96, 0, 917519, 96, 0, 917520, 96, 0, 917521, 96, 0, 917522, 96, 0, 917523, 96, 0, 917524, 96, 0, 917525, 96, 0, 917526, 96, 0, 917527, 96, 0, 917528, 96, 0, 917529, 96, 0, 917530, 96, 0, 917531, 96, 0, 917532, 96, 0, 917533, 96, 0, 917534, 96, 0, 917535, 96, 0, 917536, 96, 0, 917537, 96, 0, 917538, 96, 0, 917539, 96, 0, 917540, 96, 0, 917541, 96, 0, 917542, 96, 0, 917543, 96, 0, 917544, 96, 0, 1048575, 96, 0, 983040, 96, 0, 983041, 96, 0, 983042, 96, 0, 983043, 96, 0, 983044, 96, 0, 983045, 96, 0, 983046, 96, 0, 983047, 96, 0, 983048, 96, 0, 983049, 96, 0, 983050, 96, 0, 983051, 96, 0, 983052, 96, 0, 983053, 96, 0, 983054, 96, 0, 983055, 96, 0, 983056, 96, 0, 983057, 96, 0, 983058, 96, 0, 983059, 96, 0, 983060, 96, 0, 983061, 96, 0, 983062, 96, 0, 983063, 96, 0, 983064, 96, 0, 983065, 96, 0, 983066, 96, 0, 983067, 96, 0, 983068, 96, 0, 983069, 96, 0, 983070, 96, 0, 983071, 96, 0, 983072, 96, 0, 983073, 96, 0, 983074, 96, 0, 983075, 96, 0, 983076, 96, 0, 983077, 96, 0, 983078, 96, 0, 983079, 96, 0, 983080, 96, 0, 1114111, 96, 0, 1048576, 96, 0, 1048577, 96, 0, 1048578, 96, 0, 1048579, 96, 0, 1048580, 96, 0, 1048581, 96, 0, 1048582, 96, 0, 1048583, 96, 0, 1048584, 96, 0, 1048585, 96, 0, 1048586, 96, 0, 1048587, 96, 0, 1048588, 96, 0, 1048589, 96, 0, 1048590, 96, 0, 1048591, 96, 0, 1048592, 96, 0, 1048593, 96, 0, 1048594, 96, 0, 1048595, 96, 0, 1048596, 96, 0, 1048597, 96, 0, 1048598, 96, 0, 1048599, 96, 0, 1048600, 96, 0, 1048601, 96, 0, 1048602, 96, 0, 1048603, 96, 0, 1048604, 96, 0, 1048605, 96, 0, 1048606, 96, 0, 1048607, 96, 0, 1048608, 96, 0, 1048609, 96, 0, 1048610, 96, 0, 1048611, 96, 0, 1048612, 96, 0, 1048613, 96, 0, 1048614, 96, 0, 1048615, 96, 0, 1048616, 96, 0, 1179647, 96, 0, 1114112, 96, 0, 1114113, 96, 0, 1114114, 96, 0, 1114115, 96, 0, 1114116, 96, 0, 1114117, 96, 0, 1114118, 96, 0, 1114119, 96, 0, 1114120, 96, 0, 1114121, 96, 0, 1114122, 96, 0, 1114123, 96, 0, 1114124, 96, 0, 1114125, 96, 0, 1114126, 96, 0, 1114127, 96, 0, 1114128, 96, 0, 1114129, 96, 0, 1114130, 96, 0, 1114131, 96, 0, 1114132, 96, 0, 1114133, 96, 0, 1114134, 96, 0, 1114135, 96, 0, 1114136, 96, 0, 1114137, 96, 0, 1114138, 96, 0, 1114139, 96, 0, 1114140, 96, 0, 1114141, 96, 0, 1114142, 96, 0, 1114143, 96, 0, 1114144, 96, 0, 1114145, 96, 0, 1114146, 96, 0, 1114147, 96, 0, 1114148, 96, 0, 1114149, 96, 0, 1114150, 96, 0, 1114151, 96, 0, 1114152, 96, 0, 1245183, 96, 0, 1179648, 96, 0, 1179649, 96, 0, 1179650, 96, 0, 1179651, 96, 0, 1179652, 96, 0, 1179653, 96, 0, 1179654, 96, 0, 1179655, 96, 0, 1179656, 96, 0, 1179657, 96, 0, 1179658, 96, 0, 1179659, 96, 0, 1179660, 96, 0, 1179661, 96, 0, 1179662, 96, 0, 1179663, 96, 0, 1179664, 96, 0, 1179665, 96, 0, 1179666, 96, 0, 1179667, 96, 0, 1179668, 96, 0, 1179669, 96, 0, 1179670, 96, 0, 1179671, 96, 0, 1179672, 96, 0, 1179673, 96, 0, 1179674, 96, 0, 1179675, 96, 0, 1179676, 96, 0, 1179677, 96, 0, 1179678, 96, 0, 1179679, 96, 0, 1179680, 96, 0, 1179681, 96, 0, 1179682, 96, 0, 1179683, 96, 0, 1179684, 96, 0, 1179685, 96, 0, 1179686, 96, 0, 1179687, 96, 0, 1179688, 96, 0, 1310719, 96, 0, 1245184, 96, 0, 1245185, 96, 0, 1245186, 96, 0, 1245187, 96, 0, 1245188, 96, 0, 1245189, 96, 0, 1245190, 96, 0, 1245191, 96, 0, 1245192, 96, 0, 1245193, 96, 0, 1245194, 96, 0, 1245195, 96, 0, 1245196, 96, 0, 1245197, 96, 0, 1245198, 96, 0, 1245199, 96, 0, 1245200, 96, 0, 1245201, 96, 0, 1245202, 96, 0, 1245203, 96, 0, 1245204, 96, 0, 1245205, 96, 0, 1245206, 96, 0, 1245207, 96, 0, 1245208, 96, 0, 1245209, 96, 0, 1245210, 96, 0, 1245211, 96, 0, 1245212, 96, 0, 1245213, 96, 0, 1245214, 96, 0, 1245215, 96, 0, 1245216, 96, 0, 1245217, 96, 0, 1245218, 96, 0, 1245219, 96, 0, 1245220, 96, 0, 1245221, 96, 0, 1245222, 96, 0, 1245223, 96, 0, 1245224, 96, 0, 1376255, 96, 0, 1310720, 96, 0, 1310721, 96, 0, 1310722, 96, 0, 1310723, 96, 0, 1310724, 96, 0, 1310725, 96, 0, 1310726, 96, 0, 1310727, 96, 0, 1310728, 96, 0, 1310729, 96, 0, 1310730, 96, 0, 1310731, 96, 0, 1310732, 96, 0, 1310733, 96, 0, 1310734, 96, 0, 1310735, 96, 0, 1310736, 96, 0, 1310737, 96, 0, 1310738, 96, 0, 1310739, 96, 0, 1310740, 96, 0, 1310741, 96, 0, 1310742, 96, 0, 1310743, 96, 0, 1310744, 96, 0, 1310745, 96, 0, 1310746, 96, 0, 1310747, 96, 0, 1310748, 96, 0, 1310749, 96, 0, 1310750, 96, 0, 1310751, 96, 0, 1310752, 96, 0, 1310753, 96, 0, 1310754, 96, 0, 1310755, 96, 0, 1310756, 96, 0, 1310757, 96, 0, 1310758, 96, 0, 1310759, 96, 0, 1310760, 96, 0, 1441791, 96, 0, 1376256, 96, 0, 1376257, 96, 0, 1376258, 96, 0, 1376259, 96, 0, 1376260, 96, 0, 1376261, 96, 0, 1376262, 96, 0, 1376263, 96, 0, 1376264, 96, 0, 1376265, 96, 0, 1376266, 96, 0, 1376267, 96, 0, 1376268, 96, 0, 1376269, 96, 0, 1376270, 96, 0, 1376271, 96, 0, 1376272, 96, 0, 1376273, 96, 0, 1376274, 96, 0, 1376275, 96, 0, 1376276, 96, 0, 1376277, 96, 0, 1376278, 96, 0, 1376279, 96, 0, 1376280, 96, 0, 1376281, 96, 0, 1376282, 96, 0, 1376283, 96, 0, 1376284, 96, 0, 1376285, 96, 0, 1376286, 96, 0, 1376287, 96, 0, 1376288, 96, 0, 1376289, 96, 0, 1376290, 96, 0, 1376291, 96, 0, 1376292, 96, 0, 1376293, 96, 0, 1376294, 96, 0, 1376295, 96, 0, 1376296, 96, 0, 1507327, 96, 0, 1441792, 96, 0, 1441793, 96, 0, 1441794, 96, 0, 1441795, 96, 0, 1441796, 96, 0, 1441797, 96, 0, 1441798, 96, 0, 1441799, 96, 0, 1441800, 96, 0, 1441801, 96, 0, 1441802, 96, 0, 1441803, 96, 0, 1441804, 96, 0, 1441805, 96, 0, 1441806, 96, 0, 1441807, 96, 0, 1441808, 96, 0, 1441809, 96, 0, 1441810, 96, 0, 1441811, 96, 0, 1441812, 96, 0, 1441813, 96, 0, 1441814, 96, 0, 1441815, 96, 0, 1441816, 96, 0, 1441817, 96, 0, 1441818, 96, 0, 1441819, 96, 0, 1441820, 96, 0, 1441821, 96, 0, 1441822, 96, 0, 1441823, 96, 0, 1441824, 96, 0, 1441825, 96, 0, 1441826, 96, 0, 1441827, 96, 0, 1441828, 96, 0, 1441829, 96, 0, 1441830, 96, 0, 1441831, 96, 0, 1441832, 96, 0, 1572863, 96, 0, 1507328, 96, 0, 1507329, 96, 0, 1507330, 96, 0, 1507331, 96, 0, 1507332, 96, 0, 1507333, 96, 0, 1507334, 96, 0, 1507335, 96, 0, 1507336, 96, 0, 1507337, 96, 0, 1507338, 96, 0, 1507339, 96, 0, 1507340, 96, 0, 1507341, 96, 0, 1507342, 96, 0, 1507343, 96, 0, 1507344, 96, 0, 1507345, 96, 0, 1507346, 96, 0, 1507347, 96, 0, 1507348, 96, 0, 1507349, 96, 0, 1507350, 96, 0, 1507351, 96, 0, 1507352, 96, 0, 1507353, 96, 0, 1507354, 96, 0, 1507355, 96, 0, 1507356, 96, 0, 1507357, 96, 0, 1507358, 96, 0, 1507359, 96, 0, 1507360, 96, 0, 1507361, 96, 0, 1507362, 96, 0, 1507363, 96, 0, 1507364, 96, 0, 1507365, 96, 0, 1507366, 96, 0, 1507367, 96, 0, 1507368, 96, 0, 1638399, 96, 0, 1572864, 96, 0, 1572865, 96, 0, 1572866, 96, 0, 1572867, 96, 0, 1572868, 96, 0, 1572869, 96, 0, 1572870, 96, 0, 1572871, 96, 0, 1572872, 96, 0, 1572873, 96, 0, 1572874, 96, 0, 1572875, 96, 0, 1572876, 96, 0, 1572877, 96, 0, 1572878, 96, 0, 1572879, 96, 0, 1572880, 96, 0, 1572881, 96, 0, 1572882, 96, 0, 1572883, 96, 0, 1572884, 96, 0, 1572885, 96, 0, 1572886, 96, 0, 1572887, 96, 0, 1572888, 96, 0, 1572889, 96, 0, 1572890, 96, 0, 1572891, 96, 0, 1572892, 96, 0, 1572893, 96, 0, 1572894, 96, 0, 1572895, 96, 0, 1572896, 96, 0, 1572897, 96, 0, 1572898, 96, 0, 1572899, 96, 0, 1572900, 96, 0, 1572901, 96, 0, 1572902, 96, 0, 1572903, 96, 0, 1572904, 96, 0 )
+_sections_unfolded = [ "Cell", "Collision", "Occluder", "Z Index" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="tree" parent="walls" index="0" instance=ExtResource( 5 )]
+
+position = Vector2( 72, 16 )
+tree_no = 0
+
+[node name="tree2" parent="walls" index="1" instance=ExtResource( 5 )]
+
+position = Vector2( 216, 16 )
+tree_no = 1
+
+[node name="tree3" parent="walls" index="2" instance=ExtResource( 5 )]
+
+position = Vector2( 24, 16 )
+tree_no = 3
+
+[node name="tree4" parent="walls" index="3" instance=ExtResource( 5 )]
+
+position = Vector2( 264, 16 )
+tree_no = 2
+
+[node name="bird" parent="walls" index="4" instance=ExtResource( 6 )]
+
+position = Vector2( 88, 16 )
+
+[node name="bird2" parent="walls" index="5" instance=ExtResource( 6 )]
+
+position = Vector2( 96, 16 )
+
+[node name="bird3" parent="walls" index="6" instance=ExtResource( 6 )]
+
+position = Vector2( 208, 16 )
+scale = Vector2( -1, 1 )
+
+[node name="bird4" parent="walls" index="7" instance=ExtResource( 6 )]
+
+position = Vector2( 216, 16 )
+
+[node name="bird5" parent="walls" index="8" instance=ExtResource( 6 )]
+
+position = Vector2( 224, 16 )
+scale = Vector2( -1, 1 )
+
+[node name="bird6" parent="walls" index="9" instance=ExtResource( 6 )]
+
+position = Vector2( 48, 16 )
+
+[node name="bird7" parent="walls" index="10" instance=ExtResource( 6 )]
+
+position = Vector2( 280, 16 )
+
+[node name="bird8" parent="walls" index="11" instance=ExtResource( 6 )]
+
+position = Vector2( 280, 16 )
+scale = Vector2( -1, 1 )
+
+[node name="stairs" type="TileMap" parent="." index="3"]
+
+mode = 0
+tile_set = ExtResource( 7 )
+cell_size = Vector2( 8, 8 )
+cell_quadrant_size = 16
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+cell_half_offset = 2
+cell_tile_origin = 0
+cell_y_sort = true
+cell_clip_uv = false
+collision_use_kinematic = false
+collision_friction = 1.0
+collision_bounce = 0.0
+collision_layer = 0
+collision_mask = 0
+occluder_light_mask = 1
+format = 1
+tile_data = PoolIntArray(  )
+script = ExtResource( 8 )
+_sections_unfolded = [ "Collision" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="destructible" type="TileMap" parent="." index="4" groups=[
+"destructible",
+]]
+
+mode = 0
+tile_set = ExtResource( 4 )
+cell_size = Vector2( 8, 8 )
+cell_quadrant_size = 16
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+cell_half_offset = 2
+cell_tile_origin = 0
+cell_y_sort = true
+cell_clip_uv = false
+collision_use_kinematic = true
+collision_friction = 1.0
+collision_bounce = 0.0
+collision_layer = 2
+collision_mask = 2
+occluder_light_mask = 1
+format = 1
+tile_data = PoolIntArray(  )
+script = ExtResource( 9 )
+_sections_unfolded = [ "Collision" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="player" parent="." index="5" instance=ExtResource( 10 )]
+
+position = Vector2( 120, 16 )
+
+[node name="start_position" type="Position2D" parent="." index="6"]
+
+position = Vector2( 8, 16 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="finish_area" type="Area2D" parent="." index="7"]
+
+position = Vector2( 320, 56 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+monitorable = false
+audio_bus_override = false
+audio_bus_name = "Master"
+_sections_unfolded = [ "Collision" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="finish_area" index="0"]
+
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="cutscene_01" type="Area2D" parent="." index="8"]
+
+position = Vector2( 240, 328 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+script = SubResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="cutscene_01" index="0"]
+
+shape = SubResource( 3 )
+
+[node name="cutsceneanim" type="AnimationPlayer" parent="cutscene_01" index="1"]
+
+root_node = NodePath("..")
+autoplay = ""
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/rick = SubResource( 4 )
+blend_times = [  ]
+
+[node name="Timer" type="Timer" parent="cutscene_01" index="2"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
+
+[node name="Label" type="Label" parent="." index="9"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = -136.0
+margin_right = 320.0
+margin_bottom = 44.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 11 )
+custom_colors/font_color = Color( 0, 0, 0, 0.9 )
+text = "Nicely done! You've finished the game.
+
+I hope that you've enjoyed it as much as I did making it.
+
+All the best,
+Securas
+
+and here's some shameless self promotion
+https://securas.itch.io"
+align = 1
+valign = 1
+uppercase = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+script = SubResource( 5 )
+_sections_unfolded = [ "Rect", "custom_colors", "custom_fonts" ]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Label" index="0"]
+
+root_node = NodePath("..")
+autoplay = "cycle"
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/cycle = SubResource( 6 )
+blend_times = [  ]
+
+[node name="Label2" type="Label" parent="." index="10"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 120.0
+margin_top = -56.0
+margin_right = 440.0
+margin_bottom = 124.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 11 )
+custom_colors/font_color = Color( 1, 1, 1, 0.370157 )
+text = "press Esc to end"
+align = 1
+valign = 1
+uppercase = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+script = SubResource( 5 )
+_sections_unfolded = [ "Rect", "custom_colors", "custom_fonts" ]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Label2" index="0"]
+
+root_node = NodePath("..")
+autoplay = "cycle"
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/cycle = SubResource( 7 )
+blend_times = [  ]
+
+[node name="Sprite2" type="Sprite" parent="." index="11"]
+
+visible = false
+position = Vector2( 160, -48 )
+texture = ExtResource( 12 )
+region_enabled = true
+region_rect = Rect2( 0, 22, 292, 53 )
+
+[node name="Sprite" type="Sprite" parent="Sprite2" index="0"]
+
+position = Vector2( -116, -28 )
+texture = ExtResource( 12 )
+region_enabled = true
+region_rect = Rect2( 1, 0, 51, 22 )
+
+[connection signal="body_entered" from="finish_area" to="." method="_on_finish_area_body_entered"]
+
+[connection signal="body_entered" from="cutscene_01" to="cutscene_01" method="_on_cutscene_01_body_entered"]
+
+

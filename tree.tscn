@@ -1,0 +1,115 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://tree.gd" type="Script" id=1]
+[ext_resource path="res://trees.png" type="Texture" id=2]
+
+[node name="tree" type="Node2D"]
+
+z_index = -1
+script = ExtResource( 1 )
+_sections_unfolded = [ "Collision", "Pickable", "Z Index" ]
+
+[node name="Sprite" type="Sprite" parent="." index="0"]
+
+texture = ExtResource( 2 )
+offset = Vector2( 0, -32 )
+vframes = 2
+hframes = 4
+_sections_unfolded = [ "Animation" ]
+
+[node name="area_1" type="StaticBody2D" parent="." index="1"]
+
+input_pickable = true
+collision_layer = 8
+collision_mask = 0
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+_sections_unfolded = [ "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="col_1" type="CollisionPolygon2D" parent="area_1" index="0"]
+
+visible = false
+position = Vector2( -3, -2 )
+build_mode = 0
+polygon = PoolVector2Array( -11, -27, -5, -34, 8, -35, 10, -31, 17, -26, 16, -21, 5, -17, 2, -12, 3, 0, -3, 0, -1, -12, -2, -19 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="area_2" type="StaticBody2D" parent="." index="2"]
+
+input_pickable = true
+collision_layer = 8
+collision_mask = 0
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+_sections_unfolded = [ "Collision", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="col_2" type="CollisionPolygon2D" parent="area_2" index="0"]
+
+visible = false
+position = Vector2( -5, 0 )
+build_mode = 0
+polygon = PoolVector2Array( -9, -23, -5, -32, 6, -33, 9, -28, 11, -20, 6, -14, 2, -12, 3, 0, -3, 0, -1, -12, -8, -15 )
+_sections_unfolded = [ "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="area_3" type="StaticBody2D" parent="." index="3"]
+
+input_pickable = true
+collision_layer = 8
+collision_mask = 0
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+_sections_unfolded = [ "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="col_3" type="CollisionPolygon2D" parent="area_3" index="0"]
+
+visible = false
+build_mode = 0
+polygon = PoolVector2Array( -9, -23, -2, -39, 7, -37, 14, -33, 11, -19, 7, -11, 2, -12, 3, 0, -2, 0, -1, -12, -7, -15 )
+_sections_unfolded = [ "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="area_4" type="StaticBody2D" parent="." index="4"]
+
+input_pickable = true
+collision_layer = 8
+collision_mask = 0
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="col_4" type="CollisionPolygon2D" parent="area_4" index="0"]
+
+visible = false
+position = Vector2( -3, -2 )
+build_mode = 0
+polygon = PoolVector2Array( 9, -10, 9, -5, 4, -3, 3, 0, -2, 0, -5, -4, 1, -10 )
+_sections_unfolded = [ "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+

@@ -1,0 +1,591 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://main.gd" type="Script" id=1]
+[ext_resource path="res://player.png" type="Texture" id=2]
+[ext_resource path="res://tinyfont.fnt" type="BitmapFont" id=3]
+[ext_resource path="res://text.gd" type="Script" id=4]
+[ext_resource path="res://glitch.shader" type="Shader" id=5]
+[ext_resource path="res://pixel.png" type="Texture" id=6]
+[ext_resource path="res://transition.shader" type="Shader" id=7]
+[ext_resource path="res://camera.gd" type="Script" id=8]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends Label
+
+# class member variables go here, for example:
+# var a = 2
+# var b = \"textvar\"
+
+func _ready():
+	# Called every time the node is added to the scene.
+	# Initialization here
+	pass
+
+func _physics_process(delta):
+	self.text = str( Engine.get_frames_per_second() )
+"
+
+[sub_resource type="ShaderMaterial" id=2]
+
+render_priority = 0
+shader = ExtResource( 5 )
+shader_param/AMT = 0.0
+shader_param/SPEED = 0.6
+_sections_unfolded = [ "shader_param" ]
+
+[sub_resource type="ShaderMaterial" id=3]
+
+render_priority = 0
+shader = ExtResource( 7 )
+shader_param/fade_level = 0.0
+_sections_unfolded = [ "shader_param" ]
+
+[sub_resource type="Animation" id=4]
+
+length = 1.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("transisionpixel:material:shader_param/fade_level")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 1.0, 0.0 ]
+}
+
+[sub_resource type="Animation" id=5]
+
+length = 1.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("transisionpixel:material:shader_param/fade_level")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0 ]
+}
+
+[sub_resource type="Animation" id=6]
+
+resource_name = "glitch"
+length = 10.0
+loop = false
+step = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("glitchpixel:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("glitchpixel:material:shader_param/AMT")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("transisionpixel:material:shader_param/fade_level")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0.0, 1.0 ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("..")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 10 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ 1 ],
+"method": "_restart_level"
+} ]
+}
+
+[sub_resource type="Animation" id=7]
+
+resource_name = "start"
+length = 1.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("glitchpixel:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("glitchpixel:material:shader_param/AMT")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("glitchpixel:material:shader_param/SPEED")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.6 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("transisionpixel:material:shader_param/fade_level")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.0 ]
+}
+
+[node name="main" type="Node2D" index="0"]
+
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="levels" type="Node2D" parent="." index="0"]
+
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="gui_layer" type="CanvasLayer" parent="." index="1"]
+
+layer = 2
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+
+[node name="fps_label" type="Label" parent="gui_layer" index="0"]
+
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 166.0
+margin_right = 40.0
+margin_bottom = 180.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+script = SubResource( 1 )
+_sections_unfolded = [ "Visibility" ]
+
+[node name="gui" type="Node2D" parent="gui_layer" index="1"]
+
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="lives" type="Node2D" parent="gui_layer/gui" index="0"]
+
+editor/display_folded = true
+visible = false
+position = Vector2( 136, 8 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="live_1" type="Sprite" parent="gui_layer/gui/lives" index="0"]
+
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 237, 371, 7, 13 )
+_sections_unfolded = [ "Animation", "Region", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="live_2" type="Sprite" parent="gui_layer/gui/lives" index="1"]
+
+position = Vector2( 9, 0 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 237, 371, 7, 13 )
+_sections_unfolded = [ "Animation", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="live_3" type="Sprite" parent="gui_layer/gui/lives" index="2"]
+
+position = Vector2( 18, 0 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 237, 371, 7, 13 )
+_sections_unfolded = [ "Animation", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="live_4" type="Sprite" parent="gui_layer/gui/lives" index="3"]
+
+position = Vector2( 27, 0 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 237, 371, 7, 13 )
+_sections_unfolded = [ "Animation", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="live_5" type="Sprite" parent="gui_layer/gui/lives" index="4"]
+
+position = Vector2( 36, 0 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 237, 371, 7, 13 )
+_sections_unfolded = [ "Animation", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="live_6" type="Sprite" parent="gui_layer/gui/lives" index="5"]
+
+position = Vector2( 45, 0 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 237, 371, 7, 13 )
+_sections_unfolded = [ "Animation", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="bombs" type="Node2D" parent="gui_layer/gui" index="1"]
+
+editor/display_folded = true
+position = Vector2( 264, 8 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="bomb_1" type="Sprite" parent="gui_layer/gui/bombs" index="0"]
+
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 204, 408, 8, 8 )
+_sections_unfolded = [ "Animation", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="bomb_2" type="Sprite" parent="gui_layer/gui/bombs" index="1"]
+
+position = Vector2( 9, 0 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 204, 408, 8, 8 )
+_sections_unfolded = [ "Animation", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="bomb_3" type="Sprite" parent="gui_layer/gui/bombs" index="2"]
+
+position = Vector2( 18, 0 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 204, 408, 8, 8 )
+_sections_unfolded = [ "Animation", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="bomb_4" type="Sprite" parent="gui_layer/gui/bombs" index="3"]
+
+position = Vector2( 27, 0 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 204, 408, 8, 8 )
+_sections_unfolded = [ "Animation", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="bomb_5" type="Sprite" parent="gui_layer/gui/bombs" index="4"]
+
+position = Vector2( 36, 0 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 204, 408, 8, 8 )
+_sections_unfolded = [ "Animation", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="bomb_6" type="Sprite" parent="gui_layer/gui/bombs" index="5"]
+
+position = Vector2( 45, 0 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 204, 408, 8, 8 )
+_sections_unfolded = [ "Animation", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="bullets" type="Node2D" parent="gui_layer/gui" index="2"]
+
+editor/display_folded = true
+position = Vector2( 200, 8 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="bullet_1" type="Sprite" parent="gui_layer/gui/bullets" index="0"]
+
+rotation = -1.5708
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 172, 398, 8, 4 )
+_sections_unfolded = [ "Animation", "Region", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="bullet_2" type="Sprite" parent="gui_layer/gui/bullets" index="1"]
+
+position = Vector2( 9, 0 )
+rotation = -1.5708
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 172, 398, 8, 4 )
+_sections_unfolded = [ "Animation", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="bullet_3" type="Sprite" parent="gui_layer/gui/bullets" index="2"]
+
+position = Vector2( 18, 0 )
+rotation = -1.5708
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 172, 398, 8, 4 )
+_sections_unfolded = [ "Animation", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="bullet_4" type="Sprite" parent="gui_layer/gui/bullets" index="3"]
+
+position = Vector2( 27, 0 )
+rotation = -1.5708
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 172, 398, 8, 4 )
+_sections_unfolded = [ "Animation", "Region", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="bullet_5" type="Sprite" parent="gui_layer/gui/bullets" index="4"]
+
+position = Vector2( 36, 0 )
+rotation = -1.5708
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 172, 398, 8, 4 )
+_sections_unfolded = [ "Animation", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="bullet_6" type="Sprite" parent="gui_layer/gui/bullets" index="5"]
+
+position = Vector2( 45, 0 )
+rotation = -1.5708
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 172, 398, 8, 4 )
+_sections_unfolded = [ "Animation", "Transform" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="text" type="Label" parent="gui_layer/gui" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 180.0
+margin_bottom = 14.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.808594, 0.380213, 0.123184, 1 )
+align = 1
+valign = 1
+uppercase = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+script = ExtResource( 4 )
+_sections_unfolded = [ "Rect", "custom_colors", "custom_fonts" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="text_timer" type="Timer" parent="gui_layer/gui/text" index="0"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = true
+autostart = false
+
+[node name="transition_layer" type="CanvasLayer" parent="." index="2"]
+
+layer = 3
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+
+[node name="glitchpixel" type="Sprite" parent="transition_layer" index="0"]
+
+material = SubResource( 2 )
+scale = Vector2( 320, 180 )
+texture = ExtResource( 6 )
+centered = false
+_sections_unfolded = [ "Material", "Offset", "Transform", "Visibility" ]
+
+[node name="transisionpixel" type="Sprite" parent="transition_layer" index="1"]
+
+material = SubResource( 3 )
+scale = Vector2( 320, 180 )
+texture = ExtResource( 6 )
+centered = false
+_sections_unfolded = [ "Material", "Offset", "Transform", "Visibility" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="transanim" type="AnimationPlayer" parent="transition_layer" index="2"]
+
+root_node = NodePath("..")
+autoplay = "start"
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 4.0
+anims/fade_in = SubResource( 4 )
+anims/fade_out = SubResource( 5 )
+anims/glitch = SubResource( 6 )
+anims/start = SubResource( 7 )
+blend_times = [  ]
+_sections_unfolded = [ "Playback Options" ]
+
+[node name="loadtimer" type="Timer" parent="." index="3"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = true
+autostart = false
+
+[node name="camera" type="Camera2D" parent="." index="4"]
+
+anchor_mode = 1
+rotating = false
+current = true
+zoom = Vector2( 1, 1 )
+limit_left = 0
+limit_top = -10000000
+limit_right = 10000000
+limit_bottom = 10000000
+limit_smoothed = false
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
+smoothing_enabled = true
+smoothing_speed = 5.0
+offset_v = 0.0
+offset_h = 0.0
+drag_margin_left = 0.3
+drag_margin_top = 0.3
+drag_margin_right = 0.2
+drag_margin_bottom = 0.2
+editor_draw_screen = true
+editor_draw_limits = false
+editor_draw_drag_margin = false
+script = ExtResource( 8 )
+_sections_unfolded = [ "Smoothing" ]
+
+[node name="music" type="AudioStreamPlayer" parent="." index="5"]
+
+stream = null
+volume_db = 0.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[connection signal="text_finished" from="gui_layer/gui/text" to="." method="_on_text_text_finished"]
+
+[connection signal="timeout" from="gui_layer/gui/text/text_timer" to="gui_layer/gui/text" method="_on_text_timer_timeout"]
+
+[connection signal="timeout" from="loadtimer" to="." method="_on_loadtimer_timeout"]
+
+
