@@ -353,6 +353,7 @@ func _start_state_jumpdown( delta, is_jump = false, from_stairs = false ):
 	_fall_timer = 0
 	_jumpdown_timer = 0
 	_grab_stairs_timer = 1
+	cur_gravity = GRAVITY
 	if from_stairs:
 		_grab_stairs_timer = 0
 	if not is_jump:
@@ -483,7 +484,6 @@ func _state_climb( delta ):
 		cur_gravity = GRAVITY
 		self.set_collision_mask_bit( 1, true )
 		_start_state_jumpdown( delta, false, true )
-		#_start_state_idle( delta )
 
 
 
