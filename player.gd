@@ -87,8 +87,8 @@ func _physics_process( delta ):
 			$anim.play( anim_cur )
 		
 		# states
-		#if state_nxt != state_cur:
-		#	print( "state: ", state_nxt )
+		if state_nxt != state_cur:
+			print( "state: ", state_nxt )
 		state_cur = state_nxt
 		if not is_dead:
 			if state_cur == STATES.IDLE:
@@ -222,6 +222,7 @@ func _fire_fsm( delta ):
 func _start_state_idle( delta ):
 	$rotate/damagebox.position = Vector2( 0, -8 )
 	anim_nxt = "idle"
+	cur_gravity = GRAVITY
 	state_nxt = STATES.IDLE
 func _state_idle( delta ):
 	vel.x = lerp( vel.x, 0, DECEL_GROUND * delta )
@@ -247,6 +248,7 @@ func _state_idle( delta ):
 #============================
 func _state_run( delta ):
 	anim_nxt = "run"
+	cur_gravity = GRAVITY
 	# player input
 	if Input.is_action_pressed( "btn_left" ):
 		vel.x = lerp( vel.x, -MAX_VEL_GROUND, ACCEL_GROUND * delta )
@@ -343,12 +345,16 @@ func _state_jump( delta ):
 # state jump down
 #============================
 var _jumpdown_timer = 0
+var _grab_stairs_timer = 0
 var _fall_timer = 0
-func _start_state_jumpdown( delta, is_jump = false ):
+func _start_state_jumpdown( delta, is_jump = false, from_stairs = false ):
 	anim_nxt = "jump down"
 	state_nxt = STATES.JUMP_DOWN
 	_fall_timer = 0
 	_jumpdown_timer = 0
+	_grab_stairs_timer = 1
+	if from_stairs:
+		_grab_stairs_timer = 0
 	if not is_jump:
 		_jumpdown_timer = JUMP_MARGIN
 func _state_jumpdown( delta ):
@@ -375,7 +381,8 @@ func _state_jumpdown( delta ):
 		#throwback
 		if Input.is_action_pressed( "btn_fire" ):
 			vel.x = lerp( vel.x, 0, 10 * DECEL_AIR * delta )
-	if is_on_stairs([2]):
+	_grab_stairs_timer += delta
+	if is_on_stairs([2]) and _grab_stairs_timer > 0.2:
 		if Input.is_action_pressed( "btn_up" ) or Input.is_action_pressed( "btn_down" ):
 			_start_state_climb( delta )
 	_check_fire_btn( delta )
@@ -475,7 +482,8 @@ func _state_climb( delta ):
 		$anim.playback_speed = 1
 		cur_gravity = GRAVITY
 		self.set_collision_mask_bit( 1, true )
-		_start_state_idle( delta )
+		_start_state_jumpdown( delta, false, true )
+		#_start_state_idle( delta )
 
 
 
