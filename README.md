@@ -11,3 +11,7 @@ of the [Godot Engine Facebook community](https://www.facebook.com/groups/godoten
 Thanks guys for always being there to help!
 
 You can download a build here: https://securas.itch.io/daisy
+
+Licences:
+Code is MIT
+Assets (sound and graphics) are CC-BY-NC 2.0
