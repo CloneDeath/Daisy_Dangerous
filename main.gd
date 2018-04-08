@@ -4,7 +4,7 @@ signal text_finished
 var _is_playing_intro = false
 var cur_stream = ""
 
-const FIRST_LEVEL = "res://level_01.tscn"#"end_level.tscn"#
+const FIRST_LEVEL = "test_stairs.tscn"#"res://level_01.tscn"#"end_level.tscn"#
 
 func _ready():
 	_load_scene("res://intro_screen.tscn" )#( "res://level_01.tscn" )##( "res://opening_screen.tscn" )#

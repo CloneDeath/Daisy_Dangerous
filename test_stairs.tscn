@@ -1,0 +1,239 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://level.gd" type="Script" id=1]
+[ext_resource path="res://bg_tileset.tres" type="TileSet" id=2]
+[ext_resource path="res://tileset.tres" type="TileSet" id=3]
+[ext_resource path="res://stairs_tileset.tres" type="TileSet" id=4]
+[ext_resource path="res://stairs.gd" type="Script" id=5]
+[ext_resource path="res://destructible.gd" type="Script" id=6]
+[ext_resource path="res://player.tscn" type="PackedScene" id=7]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 8, 30 )
+
+[sub_resource type="GDScript" id=2]
+
+script/source = "extends Area2D
+
+# class member variables go here, for example:
+# var a = 2
+# var b = \"textvar\"
+
+func _ready():
+	# Called every time the node is added to the scene.
+	# Initialization here
+	pass
+
+
+var is_done = false
+func _on_cutscene_01_body_entered(body):
+	if body != game.player: return
+	if is_done: return
+	if not game.add_event( \"cutscene_01\" ): return
+	is_done = true
+	# cutscene
+	game.player.set_cutscene()
+	game.player.text( \"This cave looks a lot like an old game I played!\", 3 )
+	yield( game.player, \"text_finished\" )
+	game.player.look_at_player()
+	game.player.text( \"Do you know which game is that?\", 3 )
+	yield( game.player, \"text_finished\" )
+	game.player.clear_cutscene()"
+
+[sub_resource type="RectangleShape2D" id=3]
+
+custom_solver_bias = 0.0
+extents = Vector2( 10, 10 )
+
+[sub_resource type="Animation" id=4]
+
+resource_name = "rick"
+length = 1.0
+loop = false
+step = 0.1
+
+[node name="level_01" type="Node2D" index="0"]
+
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+nxt_level = "res://level_01.tscn"
+music = "res://level_01.ogg"
+
+[node name="bg" type="TileMap" parent="." index="0"]
+
+modulate = Color( 0.71875, 0.71875, 0.71875, 1 )
+light_mask = 2
+z_index = -5
+mode = 0
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 8, 8 )
+cell_quadrant_size = 16
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+cell_half_offset = 2
+cell_tile_origin = 0
+cell_y_sort = true
+cell_clip_uv = false
+collision_use_kinematic = false
+collision_friction = 1.0
+collision_bounce = 0.0
+collision_layer = 1
+collision_mask = 1
+occluder_light_mask = 2
+format = 1
+tile_data = PoolIntArray(  )
+_sections_unfolded = [ "Cell", "Transform", "Visibility", "Z Index" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="walls" type="TileMap" parent="." index="1" groups=[
+"tilemap",
+]]
+
+mode = 0
+tile_set = ExtResource( 3 )
+cell_size = Vector2( 8, 8 )
+cell_quadrant_size = 16
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+cell_half_offset = 2
+cell_tile_origin = 0
+cell_y_sort = true
+cell_clip_uv = false
+collision_use_kinematic = true
+collision_friction = 1.0
+collision_bounce = 0.0
+collision_layer = 2
+collision_mask = 2
+occluder_light_mask = 1
+format = 1
+tile_data = PoolIntArray( -196606, 46, 0, -196605, 46, 0, -196604, 46, 0, -196603, 46, 0, -196602, 46, 0, -196601, 46, 0, -196600, 46, 0, -196599, 34, 0, -196598, 46, 0, -196597, 46, 0, -196596, 46, 0, -196595, 48, 0, -196594, 46, 0, -196593, 46, 0, -196592, 34, 0, -196591, 46, 0, -196590, 46, 0, -196589, 46, 0, -196588, 46, 0, -196587, 46, 0, -131059, 49, 0, -65523, 49, 0, 13, 49, 0, 65549, 49, 0, 196607, 85, 0, 131072, 85, 0, 131073, 85, 0, 131074, 85, 0, 131075, 85, 0, 131076, 85, 0, 131077, 85, 0, 131078, 85, 0, 131079, 85, 0, 131080, 85, 0, 131081, 85, 0, 131082, 85, 0, 131083, 85, 0, 131084, 85, 0, 131085, 85, 0, 131086, 85, 0, 131087, 85, 0, 131088, 85, 0, 131089, 85, 0 )
+_sections_unfolded = [ "Cell", "Collision", "Occluder", "Z Index" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="stairs" type="TileMap" parent="." index="2"]
+
+mode = 0
+tile_set = ExtResource( 4 )
+cell_size = Vector2( 8, 8 )
+cell_quadrant_size = 16
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+cell_half_offset = 2
+cell_tile_origin = 0
+cell_y_sort = true
+cell_clip_uv = false
+collision_use_kinematic = false
+collision_friction = 1.0
+collision_bounce = 0.0
+collision_layer = 0
+collision_mask = 0
+occluder_light_mask = 1
+format = 1
+tile_data = PoolIntArray( -262135, 2, 0, -262128, 2, 0, -196599, 3, 0, -196592, 3, 0, -131063, 3, 0, -131056, 3, 0, -65527, 3, 0, 9, 3, 0, 65545, 3, 0 )
+script = ExtResource( 5 )
+_sections_unfolded = [ "Collision" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="destructible" type="TileMap" parent="." index="3" groups=[
+"destructible",
+]]
+
+mode = 0
+tile_set = ExtResource( 3 )
+cell_size = Vector2( 8, 8 )
+cell_quadrant_size = 16
+cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+cell_half_offset = 2
+cell_tile_origin = 0
+cell_y_sort = true
+cell_clip_uv = false
+collision_use_kinematic = true
+collision_friction = 1.0
+collision_bounce = 0.0
+collision_layer = 2
+collision_mask = 2
+occluder_light_mask = 1
+format = 1
+tile_data = PoolIntArray(  )
+script = ExtResource( 6 )
+_sections_unfolded = [ "Collision" ]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="player" parent="." index="4" instance=ExtResource( 7 )]
+
+position = Vector2( 16, 16 )
+
+[node name="start_position" type="Position2D" parent="." index="5"]
+
+position = Vector2( 8, 16 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="finish_area" type="Area2D" parent="." index="6"]
+
+position = Vector2( 344, 336 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+monitorable = false
+audio_bus_override = false
+audio_bus_name = "Master"
+_sections_unfolded = [ "Collision" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="finish_area" index="0"]
+
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="cutscene_01" type="Area2D" parent="." index="7"]
+
+position = Vector2( 240, 328 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+script = SubResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="cutscene_01" index="0"]
+
+shape = SubResource( 3 )
+
+[node name="cutsceneanim" type="AnimationPlayer" parent="cutscene_01" index="1"]
+
+root_node = NodePath("..")
+autoplay = ""
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/rick = SubResource( 4 )
+blend_times = [  ]
+
+[node name="Timer" type="Timer" parent="cutscene_01" index="2"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
+
+[connection signal="body_entered" from="finish_area" to="." method="_on_finish_area_body_entered"]
+
+[connection signal="body_entered" from="cutscene_01" to="cutscene_01" method="_on_cutscene_01_body_entered"]
+
+

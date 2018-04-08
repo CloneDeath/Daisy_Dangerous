@@ -256,17 +256,21 @@ func _state_run( delta ):
 		dir_nxt = 1
 	else:
 		_start_state_idle( delta )
-	if is_on_stairs( [ 0, 1, 2 ] ):
-		if Input.is_action_just_pressed( "btn_up" ) or Input.is_action_just_pressed( "btn_down" ):
+	
+	# stuff to do on the floor
+	if is_on_floor():
+		var bup = Input.is_action_just_pressed( "btn_up" )
+		var bdown = Input.is_action_just_pressed( "btn_down" )
+		var bjump = Input.is_action_just_pressed( "btn_jump" )
+		# jump (bup has priority)
+		if bjump or bup:
+			_start_state_jump_up( delta )
+		# stairs
+		elif ( bup and is_on_stairs( [ 0, 2 ] ) ):
 			_start_state_climb( delta )
 	else:
-		if is_on_floor():
-			if ( Input.is_action_just_pressed( "btn_jump" ) or Input.is_action_just_pressed( "btn_up" ) ):
-				_start_state_jump_up( delta )
-			elif Input.is_action_pressed( "btn_down" ):
-				_start_state_crouch( delta )
-		else:
-			_start_state_jumpdown( delta )
+		# falling
+		_start_state_jumpdown( delta )
 	_check_fire_btn( delta )
 
 

@@ -608,14 +608,23 @@ autostart = false
 [node name="check_stairs_below" type="Position2D" parent="." index="7"]
 
 position = Vector2( 0, 2 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="check_stairs_center" type="Position2D" parent="." index="8"]
 
 position = Vector2( 0, -6 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="check_stairs_above" type="Position2D" parent="." index="9"]
 
 position = Vector2( 0, -16 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="cutscene" type="Area2D" parent="." index="10"]
 
