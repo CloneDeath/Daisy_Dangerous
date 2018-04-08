@@ -3,6 +3,7 @@
 ## Daisy is in a quest to rid the land of the invading alien sentient machines. Guide her across the multiple traps laid out along the way to reach the machine overlord, defeat it and end the invasion.
 
 Daisy Dangerous is an action platformer made for the Meta Game Jam
+
 Trailer: https://youtu.be/ICdbSRhmzqI
 
 This demo was created using Godot Engine and the author would like to thank the support
