@@ -7,16 +7,14 @@ path="res://.import/banana.png-d29bf90df9b1d33a97e54c04dedff9e9.stex"
 [deps]
 
 source_file="res://banana.png"
-source_md5="40a135813aabf841b94fabee1481901d"
-
 dest_files=[ "res://.import/banana.png-d29bf90df9b1d33a97e54c04dedff9e9.stex" ]
-dest_md5="d1a413860e81e6ffa7a27ead51db8f11"
 
 [params]
 
 compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
+compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
 flags/filter=false
@@ -26,6 +24,7 @@ flags/srgb=2
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
+process/invert_color=false
 stream=false
 size_limit=0
 detect_3d=false

@@ -15,15 +15,13 @@ func _ready():
 
 func _physics_process(delta):
 	state_cur = state_nxt
-	
+
 	if state_cur == STATES.IDLE:
 		_state_idle( delta )
 	elif state_cur == STATES.FLY:
 		_state_fly( delta )
-	
 
-
-func _state_idle( delta ):
+func _state_idle( _delta ):
 	pass
 
 func _state_fly( delta ):
@@ -32,9 +30,9 @@ func _state_fly( delta ):
 	vel.y = -FLYVEL
 	vel.x = dir * 30
 	position += delta * vel
-	
+
 	$rotate.scale.x = sign( vel.x )
-	
+
 
 
 func _on_bird_body_entered(body):

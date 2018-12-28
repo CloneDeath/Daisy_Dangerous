@@ -5,7 +5,7 @@ var players = []
 var cur_player = 0
 func _ready():
 	players.append( self )
-	for n in range( no_players - 1 ):
+	for _n in range( no_players - 1 ):
 		var a = AudioStreamPlayer.new()
 		players.append( a )
 		add_child( a )

@@ -1,11 +1,8 @@
 extends KinematicBody2D
 
-
 var bullet_scn = preload( "res://bullet.tscn" )
 var bullet_blast_scn = preload( "res://bullet_blast.tscn" )
 var bomb_scn = preload( "res://bomb.tscn" )
-var bomb_blast_scn = null
-
 
 signal player_dead
 signal text_finished
@@ -37,7 +34,6 @@ var cur_gravity = GRAVITY
 var vel = Vector2()
 var anim_cur = ""
 var anim_nxt = "idle"
-var update_anim = false
 var dir_cur = 1
 var dir_nxt = 1
 
@@ -74,21 +70,19 @@ func _physics_process( delta ):
 		# motion
 		vel.y = min( vel.y + cur_gravity * delta, TERMINAL_VEL )
 		vel = move_and_slide( vel, Vector2( 0, -1 ) )
-	
-		
+
+
 		# direction
 		if dir_nxt != dir_cur:
 			dir_cur = dir_nxt
 			$rotate.scale.x = dir_cur
-		
+
 		# animation
 		if anim_cur != anim_nxt:
 			anim_cur = anim_nxt
 			$anim.play( anim_cur )
-		
+
 		# states
-		if state_nxt != state_cur:
-			print( "state: ", state_nxt )
 		state_cur = state_nxt
 		if not is_dead:
 			if state_cur == STATES.IDLE:
@@ -109,15 +103,10 @@ func _physics_process( delta ):
 				_state_dead( delta )
 		else:
 			_state_dead( delta )
-		
+
 		# fire fsm
 		if is_firing:
 			is_firing = _fire_fsm( delta )
-
-
-
-
-
 
 onready var check_positions = [ $check_stairs_below, $check_stairs_center, $check_stairs_above ]
 func is_on_stairs( positions ):
@@ -126,8 +115,6 @@ func is_on_stairs( positions ):
 		if game.stairs.is_stairs( check_positions[positions[idx]].global_position ):
 			return true
 	return false
-
-
 
 #============================
 # player pressed fire
@@ -148,14 +135,12 @@ func _check_bomb_btn( delta ):
 #============================
 var _fire_state = 0
 var _fire_timer = 0
-var _fire_anim_timer = 0
-var is_firing_anim = false
 func _start_fire( delta ):
 	if is_dead: return
 	if not can_fire: return
 	if is_firing: return
 	is_firing = true
-	
+
 	# instance bullet
 	var b = bullet_scn.instance()
 	b.dir = Vector2( dir_cur, 0 ).normalized()
@@ -166,20 +151,20 @@ func _start_fire( delta ):
 	get_parent().add_child( b )
 	# play sound
 	$sfx.mplay( shoot_fx )
-	
+
 	# bullet blast
 	var d = bullet_blast_scn.instance()
 	d.position = Vector2( 14, -8 ) + rpos
 	if state_cur == STATES.CROUCH:
 		d.position.y += 2
 	$rotate.add_child( d )
-	
+
 	# throwback
 	vel.x -= dir_cur * FIRE_THROWBACK * 60 * delta
-	
+
 	# screen shake
 	if game.camera: game.camera.shake( 0.25, 30, 2 )
-	
+
 	# set firing animation
 	$rotate/player.frame += 8
 	var animpos = $anim.current_animation_position
@@ -187,12 +172,12 @@ func _start_fire( delta ):
 	if $anim.has_animation( newanim ):
 		$anim.play( $anim.current_animation + " shoot" )
 		$anim.seek( animpos )
-	
+
 	# prepare timer
 	_fire_timer = FIRE_INTERVAL * 2 / 3
 	# set firing state
 	_fire_state = 0
-	
+
 func _fire_fsm( delta ):
 	if _fire_state == 0:
 		# wait until timer expires
@@ -213,13 +198,13 @@ func _fire_fsm( delta ):
 			# terminate fire state
 			return false
 	return true
-		
+
 
 
 #============================
 # state idle
 #============================
-func _start_state_idle( delta ):
+func _start_state_idle( _delta ):
 	$rotate/damagebox.position = Vector2( 0, -8 )
 	anim_nxt = "idle"
 	cur_gravity = GRAVITY
@@ -258,11 +243,10 @@ func _state_run( delta ):
 		dir_nxt = 1
 	else:
 		_start_state_idle( delta )
-	
+
 	# stuff to do on the floor
 	if is_on_floor():
 		var bup = Input.is_action_just_pressed( "btn_up" )
-		var bdown = Input.is_action_just_pressed( "btn_down" )
 		var bjump = Input.is_action_just_pressed( "btn_jump" )
 		# jump (bup has priority)
 		if bjump or bup:
@@ -283,7 +267,7 @@ var _jump_state = 0
 var _jump_timer = 0
 var _jump_state_nxt = 0
 var _jump_climb_timer = 0
-func _start_state_jump_up( delta ):
+func _start_state_jump_up( _delta ):
 	_jump_state = 0
 	_jump_state_nxt = 1
 	_jump_timer = 0
@@ -292,7 +276,7 @@ func _start_state_jump_up( delta ):
 	anim_nxt = "jump start"
 	# play jump
 	$sfx.mplay( jump_fx )
-	
+
 func _jump_switch():
 	_jump_state = _jump_state_nxt
 func _state_jump( delta ):
@@ -347,7 +331,7 @@ func _state_jump( delta ):
 var _jumpdown_timer = 0
 var _grab_stairs_timer = 0
 var _fall_timer = 0
-func _start_state_jumpdown( delta, is_jump = false, from_stairs = false ):
+func _start_state_jumpdown( _delta, is_jump = false, from_stairs = false ):
 	anim_nxt = "jump down"
 	state_nxt = STATES.JUMP_DOWN
 	_fall_timer = 0
@@ -366,7 +350,6 @@ func _state_jumpdown( delta ):
 			return
 	_fall_timer += delta
 	if is_on_floor():
-		#print( "Fall timer: ", _fall_timer )
 		if _fall_timer >= 0.4:
 			if game.camera: game.camera.shake( 0.25, 30, 2 )
 		landing_dust()
@@ -388,13 +371,11 @@ func _state_jumpdown( delta ):
 			_start_state_climb( delta )
 	_check_fire_btn( delta )
 
-
-
 #============================
 # state crouch
 #============================
 var _state_crouch_timer = 0
-func _start_state_crouch( delta ):
+func _start_state_crouch( _delta ):
 	_state_crouch_timer = LOOK_DOWN_TIMER
 	anim_nxt = "crouch"
 	state_nxt = STATES.CROUCH
@@ -407,13 +388,10 @@ func _state_crouch( delta ):
 		# todo: look down
 		pass
 	if not Input.is_action_pressed( "btn_down" ):
-		#$rotate/damagebox.position.y -= 4
 		$rotate/damagebox.position = Vector2( 0, -4 )
 		_start_state_idle( delta )
-	#_check_fire_btn( delta )
 	_check_bomb_btn( delta )
-	pass
-	
+
 
 
 #============================
@@ -421,7 +399,7 @@ func _state_crouch( delta ):
 #============================
 var _bomb_state = 0
 var _bomb_timer = 0
-func _start_state_bomb( delta ):
+func _start_state_bomb( _delta ):
 	state_nxt = STATES.BOMB
 	#anim_nxt = "crouch"
 	_bomb_state = 0
@@ -446,7 +424,7 @@ func _state_bomb( delta ):
 # state climb
 #============================
 const CLIMB_VEL = 60
-func _start_state_climb( delta ):
+func _start_state_climb( _delta ):
 	state_nxt = STATES.CLIMB
 	cur_gravity = 0
 	self.set_collision_mask_bit( 1, false )
@@ -469,9 +447,9 @@ func _state_climb( delta ):
 		$anim.playback_speed = 0
 		anim_nxt = "climb"
 	if Input.is_action_pressed( "btn_left" ):
-		vel.x = -CLIMB_VEL / 2 #lerp( vel.x, -CLIMB_VEL, 1 * delta )
+		vel.x = int(-CLIMB_VEL / 2.0)
 	elif Input.is_action_pressed( "btn_right" ):
-		vel.x = CLIMB_VEL / 2#lerp( vel.x, CLIMB_VEL, 1 * delta )
+		vel.x = int(CLIMB_VEL / 2.0)
 	else:
 		vel.x = 0
 	var _ons = false
@@ -484,17 +462,6 @@ func _state_climb( delta ):
 		cur_gravity = GRAVITY
 		self.set_collision_mask_bit( 1, true )
 		_start_state_jumpdown( delta, false, true )
-
-
-
-##============================
-## state hit
-##============================
-#func _state_hit( delta ):
-#	anim_nxt = "jump down"
-#	vel *= 0.95 * 60 * delta
-#	pass
-
 
 #============================
 # state dead
@@ -558,30 +525,18 @@ func landing_dust():
 #============================
 # hit
 #============================
-func destroy( pos = null ):
-	print( "destroying player" )
+func destroy( _pos = null ):
 	_start_state_dead( get_physics_process_delta_time() )
-
-
-
 
 func _on_invulnerable_timer_timeout():
 	is_invulnerable = false
 	_start_state_idle( get_physics_process_delta_time() )
 
-
-func _on_check_fire_body_entered(body):
-	#print( "Cannot Fire" )
+func _on_check_fire_body_entered(_body):
 	can_fire = false
-	pass # replace with function body
 
-
-func _on_check_fire_body_exited(body):
-	#print( "Can Fire" )
+func _on_check_fire_body_exited(_body):
 	can_fire = true
-	pass # replace with function body
-
-
 
 #============================
 # cutscene functions
@@ -605,7 +560,6 @@ func set_cutscene( allow_idle = false ):
 	else:
 		cut_scene_anim = true
 func clear_cutscene():
-	print( "clearing cutscene" )
 	anim_cur = ""
 	_start_state_idle( get_physics_process_delta_time() )
 	can_fire = false
@@ -635,16 +589,8 @@ var shoot_fx = preload( "res://player_shoot.wav" )
 var dead_fx = preload( "res://player_die.wav" )
 var bomb_fx = preload( "res://bomb_drop.wav" )
 func pstep():
-	#print( "Bus index: ", AudioServer.get_bus_index( "step" ) )
-	#var effect = AudioServer.get_bus_effect( AudioServer.get_bus_index( "step" ), 0)
-	#effect.pitch_scale = 1#rand_range( 0.8, 1.2 )
-	#print( effect.pitch_scale )
 	$sfx.mplay( step_fx )
 
 func pclimb():
 	$sfx.mplay( step_fx )
-
-
-
-
 

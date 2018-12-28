@@ -11,12 +11,6 @@ const HVEL = 180
 var bullet_scn = preload( "res://boss_bullet.tscn" )
 var bullet_blast_scn = preload( "res://boss_bullet_blast.tscn" )
 
-func _ready():
-	# Called every time the node is added to the scene.
-	# Initialization here
-	pass
-
-
 enum STATES { TIME, \
 		WAIT_FOR_PLAYER, \
 		FIRE, \
@@ -66,18 +60,18 @@ func _physics_process(delta):
 				fire_state_cur = FIRE_STATES.RAISE_TURRET
 				state_nxt = STATES.FIRE
 	hit_fsm( delta )
-	
+
 	# animation
 	if anim_cur != anim_nxt or restart_anim:
 		anim_cur = anim_nxt
 		$anim.play( anim_cur )
 		restart_anim = false
-	
+
 	# direction
 	if $rotate.scale.x != dir_nxt:
 		$rotate.scale.x = dir_nxt
-		
-		
+
+
 
 func player_arrived():
 	return _player_arrived
@@ -95,7 +89,6 @@ var bullet_count = 0
 var bullet_angles = [ \
 		[ 0, 0.1, 0.2, 0.3, 0.4, 0.3, 0.2, 0.1, 0, -0.1, -0.2, -0.3, -0.4, -0.3, 0.2 ] ]
 func fire( delta ):
-	#print( fire_state_cur )
 	if fire_state_cur == FIRE_STATES.TIME:
 		fire_timer -= delta
 		if fire_timer <= 0:
@@ -118,7 +111,7 @@ func fire( delta ):
 		anim_nxt = "fire"
 		#play sound
 		$sfx.mplay( preload( "res://boss_bullet.wav" ) )
-		
+
 		restart_anim = true
 		bullet_count -= 1
 		if bullet_count > 0:
@@ -174,7 +167,6 @@ func jump( delta ):
 
 
 func _on_hitbox_area_entered(area):
-	print( "AREA: ", area.get_parent().name )
 	if area.is_in_group( "damagebox" ):
 		game.player.destroy( position )
 
@@ -188,11 +180,8 @@ func destroy( pos ):
 		else:
 			hit_state_cur = HIT_STATES.THROWBACK
 			boss_dead = true
-			print( "BOSS DEAD!!!" )
 			_on_death_timer_timeout()
 			$death_timer.start()
-	else:
-		print( "Still being hit" )
 
 var death_explosion_count = 20
 signal start_final_cutscene
@@ -203,16 +192,11 @@ func _on_death_timer_timeout():
 		if game.player != null:
 			emit_signal( "start_final_cutscene" )
 			queue_free()
-			#get_parent().get_parent()._on_finish_area_body_entered( game.player )
 	else:
 		var x = preload( "res://bomb_explosion.tscn" ).instance()
 		x.kill_player = false
 		x.position = position+Vector2( rand_range( -20, 20 ), rand_range( -40, 0 ) )
 		get_parent().add_child( x )
-	pass # replace with function body
-
-
-
 
 enum HIT_STATES { NONE, TIME, THROWBACK, LOW_TURRENT, FINISH }
 var hit_state_cur = HIT_STATES.NONE
@@ -245,14 +229,12 @@ func hit_fsm( delta ):
 			vel = Vector2( $rotate.scale.x * HVEL, -JUMP_VEL * 60 * delta )
 			finished_jump = false
 			state_nxt = STATES.JUMP
-			pass
 		else:
 			state_cur = -1 # TODO TO END STATE!
 
 var _player_arrived = false
 func _on_cutscene_01_activate_boss():
 	_player_arrived = true
-	pass # replace with function body
 
 signal text_finished
 func text( msg, duration = 2 ):

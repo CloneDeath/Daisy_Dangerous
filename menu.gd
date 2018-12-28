@@ -22,7 +22,7 @@ func set_unselectable_item( no ):
 	items[no].modulate.a = 0.1#set_opacity( 0.1 )
 	unselectable_items.append( no )
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if Input.is_action_just_pressed( "btn_fire" ) or Input.is_action_just_pressed( "btn_jump" ):
 		#SoundManager.Play("inter_confirm")
 		emit_signal( "selected_item", cur_pos )
@@ -40,10 +40,10 @@ func _physics_process(delta):
 				nxt_pos -= 2
 		else:
 			nxt_pos -= 1
-	
+
 	if nxt_pos < 0: nxt_pos = 0
 	elif nxt_pos > max_pos: nxt_pos = max_pos
-	
+
 	if nxt_pos != cur_pos:
 		cur_pos = nxt_pos
 	_update_pos( cur_pos )

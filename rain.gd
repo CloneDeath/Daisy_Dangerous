@@ -25,13 +25,13 @@ var frame_offset = Vector2( 3, 7 )
 
 func _ready():
 	extents = Rect2( global_position, Extent )
-	
+
 	# prepare texture
 	frame_size = Vector2( raintex.get_size().x / frames_h, raintex.get_size().y / frames_v )
 	for y in range( frames_v ):
 		for x in range( frames_h ):
 			frame_rects.append( Rect2( Vector2( x * frame_size.x, y * frame_size.y ), frame_size ) )
-	
+
 	# prepare rain drops
 	var space_state = get_world_2d().direct_space_state
 	for n in range( ndrops ):
@@ -75,7 +75,6 @@ func _drop_fsm( d, delta, space_state ):
 				_reset_drop( d, space_state )
 				return
 			d.frame += 1
-		pass
 
 func _reset_drop( d, space_state ):
 	#d.pos = Rect2( _get_random_reset_position( space_state ), frame_size )

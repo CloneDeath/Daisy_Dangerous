@@ -7,16 +7,14 @@ path="res://.import/daytime_bg_2.png-1a91aa06ce6db59a41f120d373619b23.stex"
 [deps]
 
 source_file="res://daytime_bg_2.png"
-source_md5="ae42f1aa64c0a6bb2d56c496da31d0db"
-
 dest_files=[ "res://.import/daytime_bg_2.png-1a91aa06ce6db59a41f120d373619b23.stex" ]
-dest_md5="4d48c961133bf124311716ff2397f05b"
 
 [params]
 
 compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
+compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
 flags/filter=false
@@ -26,6 +24,7 @@ flags/srgb=2
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
+process/invert_color=false
 stream=false
 size_limit=0
 detect_3d=false

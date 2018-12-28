@@ -10,7 +10,6 @@ func _ready():
 	if dir.x < 0:
 		$bullet.flip_h = true
 
-
 func _physics_process( delta ):
 	if hit: return
 	var coldata = move_and_collide( vel * dir * delta )
@@ -22,26 +21,16 @@ func _physics_process( delta ):
 			var b = bullet_hit_scn.instance()
 			b.set_collision_position( coldata )
 			get_parent().add_child( b )
-#		elif coldata.collider.is_in_group( "destructible" ):
-#			coldata.collider.destroy( coldata.position )
 		elif coldata.collider.is_in_group( "enemy" ):
-			#print( "CREATING BULLET HIT INSTANCE" )
 			var b = bullet_hit_scn.instance()
 			b.set_collision_position( coldata )
 			get_parent().add_child( b )
-			#print( "DONE" )
-			pass
-		#print( "COLLIDER: ", coldata.collider.name, " ", coldata.collider.is_in_group( "enemy" ) )
 		queue_free()
-
 
 func _on_VisibilityNotifier2D_screen_exited():
 	queue_free()
 
-
-
 func _on_hitbox_area_entered( area ):
-	#print( "HITBOX: ", area.name )
 	if not area.is_in_group( "damagebox" ) or hit: return
 	hit = true
 	area.get_parent().destroy( position )

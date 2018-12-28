@@ -6,7 +6,6 @@ const MAX_VEL = 50
 
 enum STATES { IDLE, RUN, DEAD, NONE }
 
-
 var state_cur = -1
 var state_nxt = STATES.NONE
 var dir_cur = 1
@@ -18,14 +17,12 @@ var vel = Vector2()
 func _ready():
 	$anim.seek( rand_range( 0, 0.2 ) )
 
-
 func _physics_process( delta ):
 	vel.y += GRAVITY * delta
 	if vel.y > TERMINAL_VEL: vel.y = TERMINAL_VEL
-	
+
 	vel = move_and_slide( vel )
-	
-	
+
 	state_cur = state_nxt
 	if state_cur == STATES.IDLE:
 		_state_idle( delta )
@@ -33,7 +30,7 @@ func _physics_process( delta ):
 		_state_run( delta )
 	elif state_cur == STATES.DEAD:
 		_state_dead( delta )
-	
+
 	if anim_nxt != anim_cur:
 		anim_cur = anim_nxt
 		$anim.play( anim_cur )
@@ -42,7 +39,6 @@ func _physics_process( delta ):
 	if dir_nxt != dir_cur:
 		dir_cur = dir_nxt
 		$rotate.scale.x = dir_cur
-
 
 func _player_visible():
 	if game.player == null: return null
@@ -53,8 +49,6 @@ func _player_visible():
 		return game.player.global_position - global_position
 	return null
 
-
-
 func _state_idle( delta ):
 	if _is_dead: return
 	anim_nxt = "idle"
@@ -63,28 +57,19 @@ func _state_idle( delta ):
 	var player_dir = _player_visible()
 	if player_dir != null:
 		state_nxt = STATES.RUN
-	
-	
+
 func _state_run( delta ):
 	if _is_dead: return
-#	# check if the player is visible
-#	var player_dir = _player_visible()
-#	if player_dir == null:
-#		state_nxt = STATES.IDLE
-#		return
-#	dir_nxt = sign( player_dir.x )
 	dir_nxt = sign( game.player.global_position.x - global_position.x )
 	vel.x = lerp( vel.x, dir_nxt * MAX_VEL, 5 * delta )
 	anim_nxt = "run"
 
 var _dead_timer = 3
 
-func _state_dead( delta ):
+func _state_dead( _delta ):
 	anim_nxt = "dead"
 	if ( global_position.y - game.camera.global_position.y > 200 ) or _dead_timer <= 0:
-		print( "finished robot" )
 		queue_free()
-
 
 func on_obstacle():
 	var coldata = null
@@ -95,7 +80,7 @@ func on_obstacle():
 	return false
 
 var _is_dead = false
-func destroy( pos = null ):
+func destroy( _pos = null ):
 	_is_dead = true
 	state_nxt = STATES.DEAD
 	vel = Vector2( -100, -200 ) * 60 * get_physics_process_delta_time()
@@ -104,14 +89,10 @@ func destroy( pos = null ):
 	$collision.queue_free()
 	$damagebox.queue_free()
 	$AudioStreamPlayer.play()
-	
-
 
 func _on_hitbox_area_entered( area ):
 	if area.is_in_group( "damagebox" ):
 		game.player.destroy( position )
-	pass # replace with function body
-
 
 var _visible = false
 func _on_VisibilityNotifier2D_screen_entered():

@@ -1,7 +1,7 @@
 extends TileMap;
 
 var _offsets = [ \
-	Vector2( 0, -1 ), Vector2( 0, 1 ), 
+	Vector2( 0, -1 ), Vector2( 0, 1 ),
 	Vector2( 1, -1 ), Vector2( 1, 0 ), Vector2( 1, 1 ), \
 	Vector2( -1, 1 ), Vector2( -1, 0 ), Vector2( -1, -1 ) ]
 
@@ -11,21 +11,14 @@ var _is_destroying = false
 
 var xpl_scn = preload( "res://terrain_explosion.tscn" )
 
-func _ready():
-	# Called every time the node is added to the scene.
-	# Initialization here
-	pass
-
 func destroy( pos ):
 	if _is_destroying: return
-	print( "destroying position: ", pos )
-	
+
 	_is_destroying = true
 	# generate a list of all the tiles to destroy
 	var mappos = world_to_map( pos )
 	mappos = get_closest_used_cell( mappos )
 	_add_cell_to_list( mappos )
-	#print( "maplist: ", _maplist )
 	# start destroying
 	_cur_idx = 0
 	if not _maplist.empty():
@@ -43,9 +36,6 @@ func get_closest_used_cell( pos ):
 			cur_dist = d
 			closest = u + Vector2()
 	return closest
-
-
-
 
 func _add_cell_to_list( mappos ):
 	if get_cell( mappos.x, mappos.y ) == -1 or _maplist.find( mappos ) != -1:
@@ -70,24 +60,3 @@ func _move_to_nxt( x ):
 	else:
 		_is_destroying = false
 		_maplist = []
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

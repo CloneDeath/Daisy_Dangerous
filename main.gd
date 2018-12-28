@@ -1,8 +1,6 @@
 extends Node2D
 
 signal text_finished
-var _is_playing_intro = false
-var cur_stream = ""
 
 const FIRST_LEVEL = "res://level_01.tscn"#"test_stairs.tscn"#"end_level.tscn"#
 
@@ -10,17 +8,12 @@ func _ready():
 	_load_scene("res://intro_screen.tscn" )#( "res://level_01.tscn" )##( "res://opening_screen.tscn" )#
 	$camera.target_nxt = "player"
 
-
-
-
 func set_hearts( value ):
 	$gui_layer/gui/hearts/counter.text = "x" + str( value )
-
 
 var load_state = 0
 var cur_scn = ""
 func _load_scene( scn ):
-	print( "Loading level: ", scn, "   State: ", load_state )
 	if load_state == 0:
 		# set current scene
 		cur_scn = scn
@@ -49,10 +42,6 @@ func _load_scene( scn ):
 			_connect_level( act )
 		$levels.add_child( act )
 		# act specific settings
-		if cur_scn == "":
-			pass
-		elif cur_scn == "":
-			pass
 		load_state = 3
 		$loadtimer.set_wait_time( 0.1 )
 		$loadtimer.start()
@@ -76,32 +65,19 @@ func _load_scene( scn ):
 
 
 func update_gamestate( gamestate ):
-#	# lives
-#	for x in range( 1, 7 ):
-#		if x > game.gamestate["lives"]:
-#			get_node( "gui_layer/gui/lives/live_" + str(x) ).hide()
-#		else:
-#			get_node( "gui_layer/gui/lives/live_" + str(x) ).show()
-	# bullets
 	for x in range( 1, 7 ):
-		if x > game.gamestate["bullets"]:
+		if x > gamestate["bullets"]:
 			get_node( "gui_layer/gui/bullets/bullet_" + str(x) ).hide()
 		else:
 			get_node( "gui_layer/gui/bullets/bullet_" + str(x) ).show()
-	# bombs
 	for x in range( 1, 7 ):
-		if x > game.gamestate["bombs"]:
+		if x > gamestate["bombs"]:
 			get_node( "gui_layer/gui/bombs/bomb_" + str(x) ).hide()
 		else:
 			get_node( "gui_layer/gui/bombs/bomb_" + str(x) ).show()
 
-
-
 func _on_loadtimer_timeout():
 	_load_scene( cur_scn )
-
-
-
 
 func _connect_level( v ):
 	v.connect( "restart_level", self, "_restart_level" )
@@ -119,14 +95,11 @@ func _start_game():
 	_load_scene( FIRST_LEVEL )
 
 func _restart_level(start_state=0):
-	print( "Restarting level: ", cur_scn )
 	game.set_initial_bullets()
 	load_state = start_state
 	_load_scene( cur_scn )
 
 func _finished_level( nxt_level ):
-	#var nxt_level = "ABC"
-	print( "Next level: ", nxt_level )
 	load_state = 0
 	_load_scene( nxt_level )
 

@@ -3,23 +3,14 @@ extends Area2D
 const VEL = 180
 var dir = 1
 
-func _ready():
-	# Called every time the node is added to the scene.
-	# Initialization here
-	pass
-
 func _physics_process(delta):
 	position += Vector2( delta * VEL * dir, 0 )
 
 var hit = false
 
-
-
 func _on_lifetimer_timeout():
 	hit = true
 	queue_free()
-	pass # replace with function body
-
 
 func _on_arrow_area_entered(area):
 	if not area.is_in_group( "damagebox" ): return
@@ -30,4 +21,3 @@ func _on_arrow_area_entered(area):
 	if hit: return
 	hit = true
 	body.destroy()
-	#queue_free()

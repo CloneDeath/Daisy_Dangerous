@@ -7,16 +7,14 @@ path="res://.import/displacement.png-ebfaf9b7ff808e96b6c7ed5bd1f7bd3f.stex"
 [deps]
 
 source_file="res://displacement.png"
-source_md5="60600a4b28cce1f288925314f720dae3"
-
 dest_files=[ "res://.import/displacement.png-ebfaf9b7ff808e96b6c7ed5bd1f7bd3f.stex" ]
-dest_md5="6f713385ac1367ebbce59cd61c38c781"
 
 [params]
 
 compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
+compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
 flags/filter=true
@@ -26,6 +24,7 @@ flags/srgb=2
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
+process/invert_color=false
 stream=false
 size_limit=0
 detect_3d=false

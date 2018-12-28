@@ -15,33 +15,16 @@ var centerpos = Vector2()
 func _ready():
 	game.camera = self
 
-
-var prv_target = ""
-
-
-
 func _physics_process( delta ):
 	if target_nxt != target:
 		target = target_nxt
-	
+
 	if target == "player":
 		if game.player != null:
 			global_position = game.player.global_position
 	elif target == "center":
 		global_position = centerpos
-	
-#
-#
-#
-#	zoom_nxt = lerp( zoom_nxt, game.camera_target_zoom, delta * ZOOM_SPEED )
-#	if abs( zoom_nxt - game.camera_target_zoom ) < 0.01:
-#		zoom_nxt = game.camera_target_zoom
-#	if zoom_nxt != get_zoom().x:
-#		set_zoom( zoom_nxt * Vector2( 1, 1 ) )
-	
-	
-	
-	
+
 	# Only shake when there's shake time remaining.
 	if _timer == 0: return
 	# Only shake on certain frames.

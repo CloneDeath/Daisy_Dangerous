@@ -7,16 +7,14 @@ path="res://.import/instructions.png-9e60945c2422c8dcd75f686fc0b1d08b.stex"
 [deps]
 
 source_file="res://instructions.png"
-source_md5="dd33ba475913397ef9a2016869ccc4cc"
-
 dest_files=[ "res://.import/instructions.png-9e60945c2422c8dcd75f686fc0b1d08b.stex" ]
-dest_md5="1247a13e1fcd0b10627da64eb9e30934"
 
 [params]
 
 compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
+compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
 flags/filter=false
@@ -26,6 +24,7 @@ flags/srgb=2
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
+process/invert_color=false
 stream=false
 size_limit=0
 detect_3d=false

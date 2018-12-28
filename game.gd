@@ -1,7 +1,6 @@
 extends Node
 
 var camera setget _set_camera, _get_camera
-var camera_target = null
 
 var player setget _set_player, _get_player
 var gamestate = { \
@@ -14,7 +13,6 @@ var gamestate = { \
 
 var stairs = null setget _set_stairs, _get_stairs
 var main = null
-
 
 #===========================
 func _set_camera( v ):
@@ -48,15 +46,11 @@ func _ready():
 		main = null
 	set_initial_gamestate()
 
-#func _physics_process(delta):
-#	if Input.is_key_pressed( KEY_ESCAPE ):
-#		print( "escaping" )
-#		get_tree().quit()
-
 func set_initial_gamestate():
 	gamestate[ "mode" ] = "player"#"banana"
 	gamestate[ "lives" ] = 6
 	gamestate[ "events" ] = []
+
 func set_initial_bullets():
 	gamestate[ "bullets" ] = 6
 	gamestate[ "bombs" ] = 6
@@ -65,6 +59,7 @@ func is_event( evtname ):
 	if gamestate[ "events" ].find( evtname ) == -1:
 		return false
 	return true
+
 func add_event( evtname ):
 	if gamestate[ "events" ].find( evtname ) == -1:
 		gamestate[ "events" ].append( evtname )

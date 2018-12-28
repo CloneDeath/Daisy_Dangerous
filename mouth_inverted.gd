@@ -6,13 +6,6 @@ var arrow_scn = preload( "res://arrow.tscn" )
 var _is_launching_cur = false
 var _is_launching_nxt = false
 
-func _ready():
-	# Called every time the node is added to the scene.
-	# Initialization here
-	pass
-
-
-
 func _physics_process(delta):
 	if _is_launching_nxt == true and _is_launching_cur == false:
 		_is_launching_cur = true
@@ -24,8 +17,6 @@ func _physics_process(delta):
 		if timer <= 0:
 			timer = 1 # 1 second between arrows
 			_launch_arrow()
-	
-
 
 func _launch_arrow():
 	var a = arrow_scn.instance()
@@ -34,14 +25,9 @@ func _launch_arrow():
 	get_parent().add_child( a )
 	$AudioStreamPlayer.play()
 
-
-
-
 func _on_find_collider_body_entered(body):
 	if body == game.player:
 		_is_launching_nxt = true
-
-
 
 func _on_find_collider_body_exited(body):
 	if body == game.player:
